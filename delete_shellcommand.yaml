@@ -1,0 +1,6 @@
+#This goes into your configuration.yaml. Restart HA after saving.  Reloading configuration yaml only doesn't seem to get the shell command added.
+#This command wipes everything in the folder you point it at every time it's called in your automation.  Don't point it at a directory where you keep important  files.
+
+shell_command:
+
+    delete_plexamp_cover: find /config/www/plexamp -type f -exec rm -f {} \;  #point this to wherever you plan to store your album cover images from your media player.
