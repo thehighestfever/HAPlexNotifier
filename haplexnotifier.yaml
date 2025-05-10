@@ -1,0 +1,35 @@
+alias: PlexAmp Notifier
+description: "Send HTML5 notifications with media player information when tracks change"
+triggers:
+  - trigger: state #trigger the automation when track changes
+    entity_id:
+      - media_player.plex_plexamp_android 
+    attribute: media_content_id
+conditions: []
+actions:
+  - action: shell_command.delete_plexamp_cover #shell command to delete existing track cover image to prevent a build up of image since file names have to change to get around Chrome caching the images.
+    metadata: {}
+    data: {}
+  - action: camera.snapshot  #generate a new snapshot from the current track's cover
+    metadata: {}
+    data:
+      filename: >-
+        #store the snapshot as a JPG in your externally accessible folder using the media content ID. This folder will be flushed by your shell command each trigger, 
+        #so don't point to something you want to keep. all to get around Chrome's image caching...
+        /config/www/plexamp/{{state_attr('media_player.plex_plexamp_android','media_content_id')}}.jpg   
+    target:
+      device_id: 31fe5f0000fe112fe58d870bc1a0191e
+  - action: notify.html5  
+    metadata: {}
+    data:
+      title: | 
+        {{state_attr('media_player.plex_plexamp_android', 'media_title')}} - 
+        {{state_attr('media_player.plex_plexamp_android', 'media_album_name')}} 
+      message: |
+        {{state_attr('media_player.plex_plexamp_android', 'media_artist')}}
+      data:
+        icon: >-
+          https://your.externalURL.com/local/plexamp/{{state_attr('media_player.plex_plexamp_android','media_content_id')}}.jpg  #point this to your own external URL and folder within /local/ (/config/wwww) directory.
+        image: >-
+          https://your.externalURL.com/local/plexamp/{{state_attr('media_player.plex_plexamp_android','media_content_id')}}.jpg  #point this to your own external URL and folder within /local/ (/config/wwww) directory.
+mode: single
