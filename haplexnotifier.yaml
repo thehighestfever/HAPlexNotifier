@@ -18,7 +18,7 @@ actions:
         #so don't point to something you want to keep. all to get around Chrome's image caching...
         /config/www/plexamp/{{state_attr('media_player.plex_plexamp_android','media_content_id')}}.jpg   
     target:
-      device_id: 31fe5f0000fe112fe58d870bc1a0191e
+      device_id: 31fe5f0000fe112fe58d870bc1a0191e #this is the ID of the Generic Camera
   - action: notify.html5  
     metadata: {}
     data:
